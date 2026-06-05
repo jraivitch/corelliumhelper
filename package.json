@@ -1,0 +1,8 @@
+{
+  "name": "corelliumhelper",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "@corellium/corellium-cli": "^1.5.1"
+  }
+}
