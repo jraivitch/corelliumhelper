@@ -28,7 +28,7 @@ jobs:
         run: |
           corellium login \
             --apitoken ${{ secrets.CORELLIUM_API_TOKEN }} \
-            --endpoint  ${{ secrets.CORELLIUM_API_ENDPOINT }}
+            --endpoint ${{ secrets.CORELLIUM_API_ENDPOINT }}
       - name: Start Corellium virtual devices
         env:
           START_INSTANCES: ${{ vars.START_INSTANCES }}
