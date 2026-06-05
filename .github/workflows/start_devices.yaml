@@ -1,0 +1,37 @@
+name: Start Corellium devices
+
+on:
+  schedule:
+    - cron: '50 10 * * 1-5'
+  workflow_dispatch:
+
+env:
+  TERM: xterm
+
+jobs:
+  corellium-start:
+    name: Start devices
+    runs-on: ubuntu-latest
+    steps:
+      - name: Pull the latest code
+        uses: actions/checkout@v6
+      - name: Install Node
+        uses: actions/setup-node@v6
+        with:
+          cache: 'npm'
+          node-version: 24
+      - name: Install Corellium CLI
+        run: |
+          npm ci --no-audit --no-fund
+          echo "$(pwd)/node_modules/.bin" >> "${GITHUB_PATH}"
+      - name: Log in to Corellium
+        run: |
+          corellium login \
+            --apitoken ${{ secrets.CORELLIUM_API_TOKEN }} \
+            --endpoint  ${{ secrets.CORELLIUM_API_ENDPOINT }}
+      - name: Start Corellium virtual devices
+        env:
+          START_INSTANCES: ${{ vars.START_INSTANCES }}
+        run: |
+          source ./src/functions.sh && set -euo pipefail
+          start_demo_instances
